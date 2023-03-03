@@ -1,0 +1,8 @@
+name: SendPosition
+version: '${version}'
+main: org.plugin.sendposition.SendPosition
+api-version: 1.19
+commands:
+  sendPosition:
+    aliases: [sp]
+    description: send your position
