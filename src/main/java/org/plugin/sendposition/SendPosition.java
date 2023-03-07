@@ -71,7 +71,7 @@ public final class SendPosition extends JavaPlugin {
             } else if (ddim.equals("world_the_end")) {
                 dim = ChatColor.DARK_PURPLE + "The End" + ChatColor.RESET;
             } else {
-                dim = ChatColor.GRAY + ddim + ChatColor.RESET;
+                dim = ChatColor.DARK_GRAY + ddim + ChatColor.RESET;
             }
             double dx = loc.getX();
             double dy = loc.getY();
