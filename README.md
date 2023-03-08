@@ -18,9 +18,15 @@ subject・・・座標メモのタイトルです
 description・・・座標メモの説明です
 
 /sp global
+
 /sp global subject タイトル
+
 /sp global description 説明
+
 /sp subject タイトル
+
 /sp description 説明
+
 /so global subject タイトル description 説明
+
 /sp subject タイトル description 説明
