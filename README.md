@@ -2,18 +2,20 @@
 プラグインサーバーで使えるプラグインです
 
 相手に自分の座標を伝えたりメモとして使用できます
+
+ダウンロードはこちらから → https://github.com/Kyuri-jp/SendPosition/releases
 # 概要
 /spで座標をチャットに残すことができます
 # サブコマンド
-subjectとdiscriptionがあります
+subjectとdescriptionがあります
 2つ同時に使うこともできます
 
 subject・・・座標メモのタイトルです
 
-discription・・・座標メモの説明です
+description・・・座標メモの説明です
 
 /sp subject タイトル
 
-/sp discription 説明
+/sp description 説明
 
-/sp subject タイトル discription 説明
+/sp subject タイトル description 説明
