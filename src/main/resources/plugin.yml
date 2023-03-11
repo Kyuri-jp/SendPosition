@@ -6,3 +6,4 @@ commands:
   sendPosition:
     aliases: [sp]
     description: send your position
+    #tab-complete: -1

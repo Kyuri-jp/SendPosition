@@ -3,10 +3,8 @@ package org.plugin.sendposition;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.util.ChatPaginator;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
@@ -17,41 +15,41 @@ public final class SendPosition extends JavaPlugin {
     @Override
     public void onEnable() {
         // Plugin startup logic
-        getLogger().info("Enable");
+        getLogger().info("Complete");
     }
 
     @Override
     public void onDisable() {
         // Plugin shutdown logic
-        getLogger().info("Disable");
+        getLogger().info("GoodBye!");
     }
 
-    //TabComplete
+
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        if (!command.getName().equalsIgnoreCase("sendposition"))
-            return super.onTabComplete(sender, command, alias, args);
-        if (args.length == 1) {
-            if (args[0].length() == 0) {
+    public List<String> onTabComplete(@NotNull CommandSender sender, Command command, @NotNull String label, String[] args) {
+
+        if (command.getName().equalsIgnoreCase("sendposition")) {
+
+            if (args.length == 1) {
                 return Arrays.asList("global", "subject", "description");
+            } else if (args.length == 2 && args[0].startsWith("g")) {
+                return Arrays.asList("subject", "description");
+            } else if (args.length == 3 && args[0].startsWith("s")) {
+                return List.of("description");
+            } else if (args.length == 3 && args[0].startsWith("d")) {
+                return List.of("subject");
+            } else if (args.length == 4 && args[0].startsWith("g") && args[1].startsWith("s")) {
+                return List.of("description");
+            } else if (args.length == 4 && args[0].startsWith("g") && args[1].startsWith("d")) {
+                return List.of("subject");
             } else {
-                if ("global".startsWith(args[0])) {
-                    return Collections.singletonList("global");
-                }
-                if ("subject".startsWith(args[0])) {
-                    return Collections.singletonList("subject");
-                } else if ("description".startsWith(args[0])) {
-                    return Collections.singletonList("description");
-                }
-                if ("description".startsWith(args[0])) {
-                    return Collections.singletonList("description");
-                } else if ("subject".startsWith(args[0])) {
-                    return Collections.singletonList("subject");
-                }
+                return null;
             }
+        } else {
+            return null;
         }
-        return super.onTabComplete(sender, command, alias, args);
     }
+
 
     static Sound sound = Sound.BLOCK_GLASS_BREAK;
     static float vol = 2.0f;
@@ -59,14 +57,13 @@ public final class SendPosition extends JavaPlugin {
 
     //playsound
     public static void playallplayer() {
-        List<Player> players = (List<Player>) Bukkit.getOnlinePlayers();
-        for (Player player : players) {
+        for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), sound, vol, pit);
         }
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command cmd, @NotNull String label, String[] args) {
         Player player = null;
         if (sender instanceof Player) {
             player = (Player) sender;
@@ -100,37 +97,35 @@ public final class SendPosition extends JavaPlugin {
                     player.playSound(player.getLocation(), sound, vol, pit);
                     getLogger().info(name + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[1] + " description:" + args[3]);
                 } else if (args.length == 2 && args[0].equalsIgnoreCase("description")) {
-                    player.sendMessage(base+" description:" + args[1]);
+                    player.sendMessage(base + " description:" + args[1]);
                     player.playSound(player.getLocation(), sound, vol, pit);
                     getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " description:" + args[1]);
                 } else if (args.length == 4 && args[2].equalsIgnoreCase("subject")) {
-                    player.sendMessage(base+ " subject:" + args[3] + " description:" + args[1]);
+                    player.sendMessage(base + " subject:" + args[3] + " description:" + args[1]);
                     player.playSound(player.getLocation(), sound, vol, pit);
                     getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[3] + " description" + args[1]);
                 }
                 if (args.length == 1 && args[0].equalsIgnoreCase("global")) {
-                    player.sendMessage(base+ ChatColor.RESET + z);
+                    player.sendMessage(base + ChatColor.RESET + z);
                     player.playSound(player.getLocation(), sound, vol, pit);
                     getLogger().info(name + " is at " + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " global");
                 } else {
                     if (args.length == 3 && args[1].equalsIgnoreCase("subject")) {
-                        Bukkit.broadcastMessage(base+ " subject:" + args[2]);
+                        Bukkit.broadcastMessage(base + " subject:" + args[2]);
                         playallplayer();
                         getLogger().info(name + " is at " + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[2] + " global");
                     } else if (args.length == 5 && args[3].equalsIgnoreCase("description")) {
-                        Bukkit.broadcastMessage(base+ " subject:" + args[2] + " description:" + args[4]);
+                        Bukkit.broadcastMessage(base + " subject:" + args[2] + " description:" + args[4]);
                         playallplayer();
                         getLogger().info(name + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[2] + " description:" + args[4] + " global");
                     } else if (args.length == 3 && args[1].equalsIgnoreCase("description")) {
-                        Bukkit.broadcastMessage(base+ " description:" + args[2]);
+                        Bukkit.broadcastMessage(base + " description:" + args[2]);
                         playallplayer();
                         getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " description:" + args[2] + " global");
                     } else if (args.length == 5 && args[3].equalsIgnoreCase("subject")) {
-                        Bukkit.broadcastMessage(base+ " subject:" + args[4] + " description:" + args[2]);
+                        Bukkit.broadcastMessage(base + " subject:" + args[4] + " description:" + args[2]);
                         playallplayer();
                         getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[4] + " description" + args[2] + " global");
-                    } else {
-                        player.sendMessage(ChatColor.DARK_RED + "that command cannot be executed");
                     }
                     return false;
 
