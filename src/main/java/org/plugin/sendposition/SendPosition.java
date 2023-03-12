@@ -9,6 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.*;
 
+import static org.bukkit.Bukkit.broadcastMessage;
+
 
 public final class SendPosition extends JavaPlugin {
 
@@ -52,13 +54,15 @@ public final class SendPosition extends JavaPlugin {
 
 
     static Sound sound = Sound.BLOCK_GLASS_BREAK;
-    static float vol = 2.0f;
+    static float vol = 5.0f;
     static float pit = 1.0f;
 
     //playsound
     public static void playallplayer() {
+
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.playSound(player.getLocation(), sound, vol, pit);
+
         }
     }
 
@@ -76,12 +80,9 @@ public final class SendPosition extends JavaPlugin {
                 case "world_the_end" -> ChatColor.DARK_PURPLE + "The End" + ChatColor.RESET;
                 default -> ChatColor.DARK_GRAY + ddim + ChatColor.RESET;
             };
-            double dx = loc.getX();
-            double dy = loc.getY();
-            double dz = loc.getZ();
-            double x = Math.floor(dx * 100) / 100;
-            double y = Math.floor(dy * 100) / 100;
-            double z = Math.floor(dz * 100) / 100;
+            double x = Math.floor(loc.getX() * 100) / 100;
+            double y = Math.floor(loc.getY() * 100) / 100;
+            double z = Math.floor(loc.getZ() * 100) / 100;
             String base = "[Send Position] " + name + " dimension:" + dim + ChatColor.RED + " x:" + ChatColor.RESET + x + ChatColor.GREEN + " y:" + ChatColor.RESET + y + ChatColor.BLUE + " z:" + ChatColor.RESET + z;
             if (args.length == 0) {
                 player.sendMessage(base);
@@ -106,24 +107,24 @@ public final class SendPosition extends JavaPlugin {
                     getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[3] + " description" + args[1]);
                 }
                 if (args.length == 1 && args[0].equalsIgnoreCase("global")) {
-                    player.sendMessage(base + ChatColor.RESET + z);
+                    broadcastMessage(base + ChatColor.RESET);
                     player.playSound(player.getLocation(), sound, vol, pit);
                     getLogger().info(name + " is at " + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " global");
                 } else {
-                    if (args.length == 3 && args[1].equalsIgnoreCase("subject")) {
-                        Bukkit.broadcastMessage(base + " subject:" + args[2]);
+                    if (args[0].startsWith("g") && args.length == 3 && args[1].equalsIgnoreCase("subject")) {
+                        broadcastMessage(base + " subject:" + args[2]);
                         playallplayer();
                         getLogger().info(name + " is at " + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[2] + " global");
-                    } else if (args.length == 5 && args[3].equalsIgnoreCase("description")) {
-                        Bukkit.broadcastMessage(base + " subject:" + args[2] + " description:" + args[4]);
+                    } else if (args[0].startsWith("g") && args.length == 5 && args[3].equalsIgnoreCase("description")) {
+                        broadcastMessage(base + " subject:" + args[2] + " description:" + args[4]);
                         playallplayer();
                         getLogger().info(name + "dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[2] + " description:" + args[4] + " global");
-                    } else if (args.length == 3 && args[1].equalsIgnoreCase("description")) {
-                        Bukkit.broadcastMessage(base + " description:" + args[2]);
+                    } else if (args[0].startsWith("g") && args.length == 3 && args[1].equalsIgnoreCase("description")) {
+                        broadcastMessage(base + " description:" + args[2]);
                         playallplayer();
                         getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " description:" + args[2] + " global");
-                    } else if (args.length == 5 && args[3].equalsIgnoreCase("subject")) {
-                        Bukkit.broadcastMessage(base + " subject:" + args[4] + " description:" + args[2]);
+                    } else if (args[0].startsWith("g") && args.length == 5 && args[3].equalsIgnoreCase("subject")) {
+                        broadcastMessage(base + " subject:" + args[4] + " description:" + args[2]);
                         playallplayer();
                         getLogger().info(name + " dimension:" + dim + " x:" + x + " y:" + y + " z:" + z + " subject:" + args[4] + " description" + args[2] + " global");
                     }
